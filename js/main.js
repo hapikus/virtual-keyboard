@@ -339,7 +339,7 @@ function initHTML() {
       <div class="kb-cont"></div>
       <div class="lang-change-msg">
         <p>Клавиатура создана в операционной системе Windows<p>
-        <p>Комбинация для переключения языка: левыe ctrl + alt<p>
+        <p>Комбинация для переключения языка: ctrl + alt<p>
       </div>
     </main>
   `;
@@ -499,6 +499,18 @@ function chekDifLogic(code, direction) {
       case "space":
         space(direction);
         break;
+      case 'altleft':
+        altleft(direction);
+        break;
+      case 'altright':
+        altright(direction);
+        break;
+      case 'controlleft':
+        controlleft(direction);
+        break;
+      case 'controlright':
+        controlright(direction);
+        break;
     }
     return isDif;
   }
@@ -642,4 +654,59 @@ function space(direction) {
   } else {
     btn.classList.remove("btn-active");
   }
+}
+
+function altleft(direction) {
+  let btn = document.querySelector(`#AltLeft`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    altStatus = true;
+    checkLanguage();
+  } else {
+    btn.classList.remove("btn-active");
+    altStatus = false;
+  }
+}
+
+function altright(direction) {
+  let btn = document.querySelector(`#AltRight`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    altStatus = true;
+    checkLanguage();
+  } else {
+    btn.classList.remove("btn-active");
+    altStatus = false;
+  }
+}
+
+function controlleft(direction) {
+  let btn = document.querySelector(`#ControlLeft`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    ctrlStatus = true;
+    checkLanguage();
+  } else {
+    btn.classList.remove("btn-active");
+    ctrlStatus = false;
+  }
+}
+
+function controlright(direction) {
+  let btn = document.querySelector(`#ControlRight`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    ctrlStatus = true;
+    checkLanguage();
+  } else {
+    btn.classList.remove("btn-active");
+    ctrlStatus = false;
+  }
+}
+
+function checkLanguage() {
+  if (ctrlStatus && altStatus) {
+    language = language === "ru" ? 'en' : 'ru';
+  }
+  fillButton();
 }
