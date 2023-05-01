@@ -306,7 +306,7 @@ let difLogicArr = [
   "ControlRight",
 ];
 
-let language = "ru";
+let language = localStorage.getItem("kbLanguage") || "ru";
 let shift = "shiftOff";
 let capsLockStatus = false;
 let capsLockCurrentClick = false;
@@ -708,5 +708,7 @@ function checkLanguage() {
   if (ctrlStatus && altStatus) {
     language = language === "ru" ? 'en' : 'ru';
   }
+  // Store
+  localStorage.setItem("kbLanguage", `${language}`);
   fillButton();
 }

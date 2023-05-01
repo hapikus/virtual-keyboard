@@ -84,6 +84,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  transition: all .2s ease-in;
 }
 
 .btn-regular-width {
@@ -101,6 +103,8 @@ body {
 .btn-active {
   background-color: $kb-button-active-bg;
   color: $kb-button-active-font;
+
+  border-radius: 12px;
 }
 
 #Backspace {

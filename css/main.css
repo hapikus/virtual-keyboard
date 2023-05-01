@@ -61,6 +61,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease-in;
 }
 
 .btn-regular-width {
@@ -78,6 +79,7 @@ body {
 .btn-active {
   background-color: #ddabeb;
   color: #833899;
+  border-radius: 12px;
 }
 
 #Backspace {
