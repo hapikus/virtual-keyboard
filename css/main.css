@@ -1,4 +1,4 @@
-@import './reset.css';
+@import "./reset.css";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
 .main {
   padding: 10px;
@@ -20,15 +20,75 @@
 }
 
 .textarea {
-  border: 1px solid black;
+  border: 1px solid #9248af;
   margin: 0 auto;
 }
 
 .kb-cont {
-  content: "";
-  padding: 10px;
-  border: 2px solid black;
+  height: 194px;
+  width: 618px;
+  padding: 4px;
+  border: 2px solid #9248af;
   border-radius: 4px;
-  background-color: #888888;
+  background-color: #300f3c;
   margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 8px;
+}
+
+.kb-line {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.button {
+  height: 30px;
+  width: 30px;
+  background: #9248af;
+  color: #ffdaff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-regular-width {
+  width: 30px;
+}
+
+.btn-extra-width {
+  width: 63px;
+}
+
+.btn-dark {
+  background-color: #b54180;
+}
+
+.btn-active {
+  background-color: #ddabeb;
+  color: #833899;
+}
+
+#Backspace {
+  font-size: 0.9rem;
+  width: 66px;
+}
+
+#Tab {
+  width: 36px;
+}
+
+#Delete {
+  width: 36px;
+}
+
+#CapsLock {
+  font-size: 0.85rem;
+}
+
+#Space {
+  width: 300px;
 }/*# sourceMappingURL=main.css.map */

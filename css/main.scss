@@ -1,38 +1,119 @@
-@import './reset.css';
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+@import "./reset.css";
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
+
+$brt-size: 30px;
+
+// orange
+$kb-background: #f2d2be;
+$kb-button-reg: #fbebe1;
+$kb-button-dark: #e89c73;
+$kb-button-font: #98847e;
+
+// violet
+$kb-background: #300f3c;
+$kb-button-reg: #9248af;
+$kb-button-dark: #b54180;
+$kb-button-font: #ffdaff;
+$kb-button-active-bg: #ddabeb;
+$kb-button-active-font: #833899;
+
 
 .main {
-    padding: 10px;
-    border: 1px solid red;
-    max-width: 1000px;
-    margin: 0 auto;
+  padding: 10px;
+  border: 1px solid red;
+  max-width: 1000px;
+  margin: 0 auto;
 
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    row-gap: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  row-gap: 15px;
 }
 
 .title {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 22px;
 
-    color: #77aa7f;
-    margin: 0 auto;
+  color: #77aa7f;
+  margin: 0 auto;
 }
 
 .textarea {
-    border: 1px solid black;
-    margin: 0 auto;
+  border: 1px solid $kb-button-reg;
+  margin: 0 auto;
 }
 
 .kb-cont {
-    content: '';
-    padding: 10px;
-    border: 2px solid black;
-    border-radius: 4px;
-    background-color: #888888;
+  height: 194px;
+  width: 618px;
+  padding: 4px;
+  border: 2px solid $kb-button-reg;
+  border-radius: 4px;
+  background-color: $kb-background;
 
-    margin: 0 auto;
+  margin: 0 auto;
+
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 8px;
 }
+
+.kb-line {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.button {
+  height: $brt-size;
+  width: $brt-size;
+  background: $kb-button-reg;
+  color: $kb-button-font;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-regular-width {
+  width: $brt-size;
+}
+
+.btn-extra-width {
+  width: $brt-size * 2.1;
+}
+
+.btn-dark {
+  background-color: $kb-button-dark;
+}
+
+.btn-active {
+  background-color: $kb-button-active-bg;
+  color: $kb-button-active-font;
+}
+
+#Backspace {
+  font-size: 0.9rem;
+  width: $brt-size * 2.2;
+}
+
+#Tab {
+  width: $brt-size * 1.2;
+}
+
+#Delete {
+  width: $brt-size * 1.2;
+}
+
+#CapsLock {
+  font-size: 0.85rem;
+}
+
+#Space {
+  width: $brt-size * 10;
+}
+
+
