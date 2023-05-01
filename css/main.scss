@@ -28,6 +28,8 @@ $kb-button-active-font: #833899;
   flex-direction: column;
   flex-wrap: nowrap;
   row-gap: 15px;
+
+  font-size: 16px;
 }
 
 .title {
@@ -35,11 +37,12 @@ $kb-button-active-font: #833899;
   font-weight: 700;
   font-size: 22px;
 
-  color: #77aa7f;
+  color: $kb-button-reg;
   margin: 0 auto;
 }
 
 .textarea {
+  max-width: 618px;
   border: 1px solid $kb-button-reg;
   margin: 0 auto;
 }
@@ -57,6 +60,8 @@ $kb-button-active-font: #833899;
   display: flex;
   flex-wrap: wrap;
   row-gap: 8px;
+
+  user-select: none;
 }
 
 .kb-line {
@@ -96,7 +101,7 @@ $kb-button-active-font: #833899;
 }
 
 #Backspace {
-  font-size: 0.9rem;
+  font-size: 14px;
   width: $brt-size * 2.2;
 }
 
@@ -109,11 +114,14 @@ $kb-button-active-font: #833899;
 }
 
 #CapsLock {
-  font-size: 0.85rem;
+  font-size: 14px;
 }
 
 #Space {
   width: $brt-size * 10;
 }
 
+.lang-change-msg {
+  margin: 0 auto;
+}
 

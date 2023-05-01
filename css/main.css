@@ -9,17 +9,19 @@
   flex-direction: column;
   flex-wrap: nowrap;
   row-gap: 15px;
+  font-size: 16px;
 }
 
 .title {
   font-family: "Roboto", sans-serif;
   font-weight: 700;
   font-size: 22px;
-  color: #77aa7f;
+  color: #9248af;
   margin: 0 auto;
 }
 
 .textarea {
+  max-width: 618px;
   border: 1px solid #9248af;
   margin: 0 auto;
 }
@@ -35,6 +37,9 @@
   display: flex;
   flex-wrap: wrap;
   row-gap: 8px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 
 .kb-line {
@@ -73,7 +78,7 @@
 }
 
 #Backspace {
-  font-size: 0.9rem;
+  font-size: 14px;
   width: 66px;
 }
 
@@ -86,9 +91,13 @@
 }
 
 #CapsLock {
-  font-size: 0.85rem;
+  font-size: 14px;
 }
 
 #Space {
   width: 300px;
+}
+
+.lang-change-msg {
+  margin: 0 auto;
 }/*# sourceMappingURL=main.css.map */

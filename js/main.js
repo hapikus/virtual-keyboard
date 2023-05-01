@@ -54,7 +54,7 @@ const KB_VALUE = {
     ],
     shiftOn: [
       [
-        "Ё",
+        "ё",
         "!",
         '"',
         "№",
@@ -71,37 +71,37 @@ const KB_VALUE = {
       ],
       [
         "Tab",
-        "Й",
-        "Ц",
-        "У",
-        "К",
-        "Е",
-        "Н",
-        "Г",
-        "Ш",
-        "Щ",
-        "З",
-        "Х",
-        "Ъ",
+        "й",
+        "ц",
+        "у",
+        "к",
+        "е",
+        "н",
+        "г",
+        "ш",
+        "щ",
+        "з",
+        "х",
+        "ъ",
         "/",
         "Del",
       ],
       [
         "CapsLock",
-        "Ф",
-        "Ы",
-        "В",
-        "А",
-        "П",
-        "Р",
-        "О",
-        "Л",
-        "Д",
-        "Ж",
-        "Э",
+        "ф",
+        "ы",
+        "в",
+        "а",
+        "п",
+        "р",
+        "о",
+        "л",
+        "д",
+        "ж",
+        "э",
         "Enter",
       ],
-      ["Shift", "Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю", ",", "▲", "Shift"],
+      ["Shift", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".", "▲", "Shift"],
       ["Ctrl", "Win", "Alt", "", "Alt", "◀", "▼", "▶", "Ctrl"],
     ],
   },
@@ -177,16 +177,16 @@ const KB_VALUE = {
       ],
       [
         "Tab",
-        "Q",
-        "W",
-        "E",
-        "R",
-        "T",
-        "Y",
-        "U",
-        "I",
-        "O",
-        "P",
+        "q",
+        "w",
+        "e",
+        "r",
+        "t",
+        "y",
+        "u",
+        "i",
+        "o",
+        "p",
         "{",
         "}",
         "|",
@@ -194,20 +194,20 @@ const KB_VALUE = {
       ],
       [
         "CapsLock",
-        "A",
-        "S",
-        "D",
-        "F",
-        "G",
-        "H",
-        "J",
-        "K",
-        "L",
+        "a",
+        "s",
+        "d",
+        "f",
+        "g",
+        "h",
+        "j",
+        "k",
+        "l",
         ":",
         '"',
         "Enter",
       ],
-      ["Shift", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "▲", "Shift"],
+      ["Shift", "z", "x", "c", "v", "b", "n", "m", "<", ">", "?", "▲", "Shift"],
       ["Ctrl", "Win", "Alt", "", "Alt", "◀", "▼", "▶", "Ctrl"],
     ],
   },
@@ -290,8 +290,29 @@ const keyID = [
   ],
 ];
 
+let difLogicArr = [
+  "Backspace",
+  "Tab",
+  "Delete",
+  "CapsLock",
+  "Enter",
+  "ShiftLeft",
+  "ShiftRight",
+  "ControlLeft",
+  "OSLeft",
+  "AltLeft",
+  "Space",
+  "AltRight",
+  "ControlRight",
+];
+
 let language = "ru";
 let shift = "shiftOff";
+let capsLockStatus = false;
+let capsLockCurrentClick = false;
+let altStatus = false;
+let ctrlStatus = false;
+let mouseClick = [];
 
 window.onload = function () {
   initHTML();
@@ -300,6 +321,7 @@ window.onload = function () {
   let body = document.querySelector("body");
   body.addEventListener("keydown", (e) => keyDown(e));
   body.addEventListener("keyup", (e) => keyUp(e));
+  body.addEventListener("mouseup", clickUp);
 };
 
 function initHTML() {
@@ -315,6 +337,10 @@ function initHTML() {
         cols="92"
       ></textarea>
       <div class="kb-cont"></div>
+      <div class="lang-change-msg">
+        <p>Клавиатура создана в операционной системе Windows<p>
+        <p>Комбинация для переключения языка: левыe ctrl + alt<p>
+      </div>
     </main>
   `;
 }
@@ -328,6 +354,7 @@ function initButton() {
       var buttonDiv = document.createElement("div");
       buttonDiv.className = "button";
       buttonDiv.id = kbElem;
+      buttonDiv.onmousedown = (e) => clickDown(e);
       buttonDiv = checkWidth(buttonDiv, kbElem);
       buttonDiv = checkColor(buttonDiv, kbElem);
       kbLineDiv.appendChild(buttonDiv);
@@ -377,23 +404,242 @@ function fillButton() {
     let rowLength = keyID[r].length;
     for (let c = 0; c < rowLength; c++) {
       let button = document.querySelector(`#${keyID[r][c]}`);
-      button.innerHTML = kbValue[r][c];
+      if (
+        (capsLockStatus && shift === "shiftOff") ||
+        (!capsLockStatus && shift === "shiftOn")
+      ) {
+        button.innerHTML =
+          kbValue[r][c].length === 1
+            ? kbValue[r][c].toUpperCase()
+            : kbValue[r][c];
+      } else {
+        button.innerHTML = kbValue[r][c];
+      }
     }
   }
 }
 
-function keyDown(event) {
-  console.log(event.code);
+function keyDown(event, mouse = false) {
+  let textAreaElem = document.querySelector(".textarea");
+  if (!mouse) event.preventDefault();
+  let direction = "down";
+
+  let checkResult = chekDifLogic(event.code, direction);
+  textAreaElem.focus();
+  if (checkResult) return;
 
   let btn = document.querySelector(`#${event.code}`);
-  let textAreaElem = document.querySelector('.textarea');
-  textAreaElem.innerHTML = textAreaElem.innerHTML + btn.innerHTML;
-  btn.classList.add('btn-active');
+  if (btn !== null) {
+    btn.classList.add("btn-active");
+    let position = textAreaElem.selectionStart;
+    textAreaElem.value =
+      textAreaElem.value.slice(0, position) +
+      btn.innerHTML +
+      textAreaElem.value.slice(position);
+    textAreaElem.selectionStart = position + 1;
+    textAreaElem.selectionEnd = position + 1;
+  }
 }
 
-function keyUp(event) {
-  console.log(event.code);
+function keyUp(event, mouse = false) {
+  let textAreaElem = document.querySelector(".textarea");
+  if (!mouse) event.preventDefault();
+  let direction = "up";
+
+  let checkResult = chekDifLogic(event.code, direction);
+  textAreaElem.focus();
+  if (checkResult) return;
 
   let btn = document.querySelector(`#${event.code}`);
-  btn.classList.remove('btn-active');
+  if (btn !== null) {
+    btn.classList.remove("btn-active");
+  }
+}
+
+function clickDown(btn) {
+  mouseClick.push(btn.target.id);
+  keyDown({ code: btn.target.id }, true);
+}
+
+function clickUp() {
+  mouseClick.forEach((item) => {
+    keyUp({ code: item }, true);
+  });
+  mouseClick = [];
+}
+
+function chekDifLogic(code, direction) {
+  let isDif = false;
+
+  if (difLogicArr.includes(code)) {
+    isDif = true;
+    let fncName = code.toLowerCase();
+    switch (fncName) {
+      case "backspace":
+        backspace(direction);
+        break;
+      case "tab":
+        tab(direction);
+        break;
+      case "delete":
+        deleteFnc(direction);
+        break;
+      case "capslock":
+        capslock(direction);
+        break;
+      case "shiftleft":
+        shiftLeft(direction);
+        break;
+      case "shiftright":
+        shiftright(direction);
+        break;
+      case "enter":
+        enter(direction);
+        break;
+      case "space":
+        space(direction);
+        break;
+    }
+    return isDif;
+  }
+}
+
+function backspace(direction) {
+  let btn = document.querySelector(`#Backspace`);
+
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    let textAreaElem = document.querySelector(".textarea");
+    let position = textAreaElem.selectionStart;
+    textAreaElem.value =
+      textAreaElem.value.slice(0, position - 1) +
+      textAreaElem.value.slice(position);
+    textAreaElem.selectionStart = position - 1;
+    textAreaElem.selectionEnd = position - 1;
+  } else {
+    btn.classList.remove("btn-active");
+  }
+}
+
+function tab(direction) {
+  let btn = document.querySelector(`#Tab`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    let textAreaElem = document.querySelector(".textarea");
+    let position = textAreaElem.selectionStart;
+    textAreaElem.value =
+      textAreaElem.value.slice(0, position) +
+      "    " +
+      textAreaElem.value.slice(position);
+    textAreaElem.selectionStart = position + 4;
+    textAreaElem.selectionEnd = position + 4;
+  } else {
+    btn.classList.remove("btn-active");
+  }
+}
+
+function deleteFnc(direction) {
+  let btn = document.querySelector(`#Delete`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    let textAreaElem = document.querySelector(".textarea");
+    let position = textAreaElem.selectionStart;
+    textAreaElem.value =
+      textAreaElem.value.slice(0, position) +
+      textAreaElem.value.slice(position + 1);
+    textAreaElem.selectionStart = position;
+    textAreaElem.selectionEnd = position;
+  } else {
+    btn.classList.remove("btn-active");
+  }
+}
+
+function capslock(direction) {
+  let btn = document.querySelector(`#CapsLock`);
+  if (direction === "down") {
+    if (capsLockCurrentClick) return;
+    if (!capsLockStatus) {
+      btn.classList.add("btn-active");
+      capsLockStatus = true;
+      capsLockCurrentClick = true;
+    } else {
+      btn.classList.remove("btn-active");
+      capsLockStatus = false;
+    }
+    fillButton();
+  }
+  if (direction === "up") {
+    capsLockCurrentClick = false;
+  }
+}
+
+function shiftLeft(direction) {
+  let btn = document.querySelector(`#ShiftLeft`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    shift = "shiftOn";
+  } else {
+    btn.classList.remove("btn-active");
+    shift = "shiftOff";
+  }
+  fillButton();
+  if (shift === "shiftOff") {
+    shiftRemoveActive();
+  }
+}
+
+function shiftright(direction) {
+  let btn = document.querySelector(`#ShiftRight`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    shift = "shiftOn";
+  } else {
+    btn.classList.remove("btn-active");
+    shift = "shiftOff";
+  }
+  fillButton();
+  if (shift === "shiftOff") {
+    shiftRemoveActive();
+  }
+}
+
+function shiftRemoveActive() {
+  let shiftL = document.querySelector(`#ShiftLeft`);
+  let shiftR = document.querySelector(`#ShiftRight`);
+  shiftL.classList.remove("btn-active");
+  shiftR.classList.remove("btn-active");
+}
+
+function enter(direction) {
+  let btn = document.querySelector(`#Enter`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    let textAreaElem = document.querySelector(".textarea");
+    let position = textAreaElem.selectionStart;
+    textAreaElem.value =
+      textAreaElem.value.slice(0, position) +
+      "\r\n" +
+      textAreaElem.value.slice(position);
+    textAreaElem.selectionStart = position + 1;
+    textAreaElem.selectionEnd = position + 1;
+  } else {
+    btn.classList.remove("btn-active");
+  }
+}
+
+function space(direction) {
+  let btn = document.querySelector(`#Space`);
+  if (direction === "down") {
+    btn.classList.add("btn-active");
+    let textAreaElem = document.querySelector(".textarea");
+    let position = textAreaElem.selectionStart;
+    textAreaElem.value =
+      textAreaElem.value.slice(0, position) +
+      " " +
+      textAreaElem.value.slice(position);
+    textAreaElem.selectionStart = position + 1;
+    textAreaElem.selectionEnd = position + 1;
+  } else {
+    btn.classList.remove("btn-active");
+  }
 }
