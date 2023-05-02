@@ -523,11 +523,12 @@ function backspace(direction) {
     btn.classList.add("btn-active");
     let textAreaElem = document.querySelector(".textarea");
     let position = textAreaElem.selectionStart;
+    let newPosition = Math.max(0, position - 1);
     textAreaElem.value =
-      textAreaElem.value.slice(0, position - 1) +
+      textAreaElem.value.slice(0, newPosition) +
       textAreaElem.value.slice(position);
-    textAreaElem.selectionStart = position - 1;
-    textAreaElem.selectionEnd = position - 1;
+    textAreaElem.selectionStart = newPosition;
+    textAreaElem.selectionEnd = newPosition;
   } else {
     btn.classList.remove("btn-active");
   }
